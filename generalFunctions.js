@@ -1,9 +1,3 @@
-function createRandomArray(length, max_num){
-    let myArray = new Array(length);
-    for(let i = 0; i < length; i++){
-        myArray[i] = Math.floor(Math.random() * (max_num));
-    }
-    return myArray;
+export function createRandomArray(size, max) {
+  return Array.from({ length: size }, () => Math.floor(Math.random() * max));
 }
-
-module.exports = { createRandomArray };

@@ -46,6 +46,7 @@ body{
   padding-top: 20vh;
   width: 30vw;
   text-align: center;
+  display: flex;
 }
 
 .sort-header{
@@ -67,4 +68,25 @@ body{
   display: flex;
   align-items: flex-end;
   justify-content: bottom;
+}
+
+.sliderNumber{
+  color:red;
+  background-color: white;
+  width: 8vw;
+  height: 3.5vw;
+  font-size: clamp(2px, 3vw, 30px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slider-box{
+  width: 20vw;
+  padding: 0 2.5vw 0 2.5vw;
+}
+
+#countSlider {
+  width: 100%;
+  height: 20px;
 }

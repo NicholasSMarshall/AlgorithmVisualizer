@@ -5,6 +5,10 @@ function sleep(ms) {
 }
 
 async function quicksort(myArray, offset) {
+  if (stop){
+    return 0;
+  }
+
   if (myArray.length <= 1) {
     return myArray;
   }
@@ -30,6 +34,9 @@ async function quicksort(myArray, offset) {
     } else {
       arr2.push(myArray[i]);
     }
+    if(stop){
+      break;
+    }
   }
 
   const leftSorted = await quicksort(arr1, offset);
@@ -38,24 +45,29 @@ async function quicksort(myArray, offset) {
 }
 
 async function visibleArray(currentArray, offset, counter) {
-  const container = document.querySelector(".bar-box");
+  if(!stop){
+    const container = document.querySelector(".bar-box");
 
-  container.innerHTML = "";
+    container.innerHTML = "";
 
-  globalArray.splice(offset, currentArray.length, ...currentArray);
+    globalArray.splice(offset, currentArray.length, ...currentArray);
 
-  globalArray.forEach((num, i) => {
-    const div = document.createElement("div");
-    div.classList.add("bar");
-    div.style.height = `${(num / maxnum) * 100}%`;
-    div.style.width = `${(100 / globalArray.length)}%`;
+    globalArray.forEach((num, i) => {
+      const div = document.createElement("div");
+      div.classList.add("bar");
+      div.style.height = `${(num / maxnum) * 100}%`;
+      div.style.width = `${(100 / globalArray.length)}%`;
 
-    if (i === offset + counter - 1) {
-        div.style.backgroundColor = "red";
-    }
+      if (i === offset + counter - 1) {
+          div.style.backgroundColor = "red";
+      }
 
-    container.appendChild(div);
-    });
+      container.appendChild(div);
+      });
+  }
+  else{
+    return 0;
+  }
 }
 
 async function completeArray() {
@@ -80,8 +92,11 @@ async function completeArray() {
             container.appendChild(div);
         });
         await sleep(1000 / maxnum);
+      if(stop){
+        break
+      }
     }
-    await sleep(5000 / maxnum);
+    await sleep(2000 / maxnum);
     const container = document.querySelector(".bar-box");
     container.innerHTML = "";
 
@@ -93,13 +108,32 @@ async function completeArray() {
 
     container.appendChild(div);
     });
+    stop = false;
+    running = false;
 }
 
 let globalArray = [];
+let stop = false;
+let running = false;
+let maxnum = 10;
 
-const maxnum = 1000;
 
-document.getElementById("startDemoButton").addEventListener("click", async function() {
+const slider = document.getElementById("countSlider");
+const output = document.getElementById("sliderNumber");
+
+slider.addEventListener("input", function () {
+  output.textContent = slider.value;
+  maxnum = slider.value;
+});
+
+
+document.getElementById("startDemoButton").addEventListener("click", async function () {
+  const button = document.getElementById("startDemoButton");
+  slider.disabled = true;
+  button.disabled = true;
+
+  running = true;
+  stop = false;
   globalArray = [];
   let myArray = createRandomArray(maxnum, maxnum);
   globalArray = Array.from(myArray);
@@ -107,4 +141,14 @@ document.getElementById("startDemoButton").addEventListener("click", async funct
   await quicksort(myArray, 0);
   await completeArray();
 
+  slider.disabled = false;
+  button.disabled = false;
 });
+
+document.getElementById("endDemoButton").addEventListener("click", async function(){
+  const button = document.getElementById("startDemoButton");
+  stop = true;
+  //await sleep(1000);
+  button.disabled = false;
+});
+

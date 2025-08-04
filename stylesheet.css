@@ -1,23 +1,77 @@
-html{
-  padding: 0;
-  margin: 0;
-}
-
-body{
-  margin: 0;
-  padding: 0;
-}
-
 .head-background{
   height: 40vh;
   background: linear-gradient(to top, gray, black);
   margin: 0;
   padding: 0;
+  display: flex;
+}
+
+.about-section{
+  height: 150vh;
+  display: flex;
+}
+
+.quick-view{
+
+}
+
+.quick-view-button{
+  height: 2.5vw;
+  width: 2.5vw;
+  margin: 1vw;
+  background-color: white;
+  border-radius: 1.25vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color .2s;
+}
+
+.quick-view-button:hover{
+  background-color: red;
+  cursor: pointer;
+}
+
+
+
+.sandwich-bar{
+  width: 1.5vw;
+  height: .2vw;
+  margin: .2vw 0 .2vw 0;
+  background-color: black;
+}
+
+
+
+
+
+.left-decor-0{
+  position: absolute;
+  left: 0;
+  background-color:white;
+  width: 5vw;
+  height: 5vw;
 }
 
 .sort-selection{
   height: 30vh;
   background-color: gray;
+  display: flex;
+}
+
+.sort-type{
+  background: linear-gradient(to right, lightgray, gray);
+  border-style: solid;
+  border-color: white;
+  border-width: 2px;
+  width: 15vw;
+  height: 5vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: clamp(5px, 2vw, 40px);
+  margin: 0 1vw 0 1vw;
 }
 
 .sort-section{
@@ -62,9 +116,9 @@ body{
 }
 
 .bar-box{
-  width: 80vw;
+  width: 80%;
   height: 70vh;
-  padding: 10vw;
+  padding: 10%;
   display: flex;
   align-items: flex-end;
   justify-content: bottom;
@@ -89,4 +143,15 @@ body{
 #countSlider {
   width: 100%;
   height: 20px;
+}
+
+body{
+  background-image: url("./images/background-0.jpg");
+  margin: 0;
+  padding: 0;
+}
+
+html{
+  margin: 0;
+  padding: 0;
 }

@@ -148,7 +148,21 @@ document.getElementById("startDemoButton").addEventListener("click", async funct
 document.getElementById("endDemoButton").addEventListener("click", async function(){
   const button = document.getElementById("startDemoButton");
   stop = true;
-  //await sleep(1000);
   button.disabled = false;
+  slider.disabled = false;
 });
+
+const leftDecor = document.querySelector(".left-decor-0");
+const backgroundTest1 = document.querySelector(".about-section");
+
+
+document.addEventListener('scroll', function(){
+  let value = window.scrollY;
+  leftDecor.style.marginTop = value/25 + 'vh';
+  backgroundTest1.style.marginTop = value/55 + 'vh';
+
+  console.log(value);
+});
+
+
 

@@ -154,12 +154,16 @@ document.getElementById("endDemoButton").addEventListener("click", async functio
 
 const leftDecor = document.querySelector(".left-decor-0");
 const backgroundTest1 = document.querySelector(".about-section");
+const factory0 = document.querySelector(".factory-0")
+const factory1 = document.querySelector(".factory-1")
 
 
 document.addEventListener('scroll', function(){
   let value = window.scrollY;
   leftDecor.style.marginTop = value/25 + 'vh';
-  backgroundTest1.style.marginTop = value/55 + 'vh';
+  //backgroundTest1.style.marginTop = value/55 + 'vh';
+  factory0.style.marginTop = value/65 + 'vh';
+  factory1.style.marginTop = value/45 + 'vh';
 
   console.log(value);
 });

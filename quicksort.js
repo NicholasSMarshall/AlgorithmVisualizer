@@ -1,8 +1,11 @@
 import { createRandomArray } from './generalFunctions.js';
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+
+let globalArray = [];
+let stop = false;
+let running = false;
+let maxnum = 10;
+
 
 async function quicksort(myArray, offset) {
   if (stop){
@@ -112,19 +115,44 @@ async function completeArray() {
     running = false;
 }
 
-let globalArray = [];
-let stop = false;
-let running = false;
-let maxnum = 10;
 
 
-const slider = document.getElementById("countSlider");
-const output = document.getElementById("sliderNumber");
 
-slider.addEventListener("input", function () {
-  output.textContent = slider.value;
-  maxnum = slider.value;
-});
+
+
+function mergesort(myArray){
+    sortedArray = divide(myArray);
+    return sortedArray;
+}
+
+function divide(myArray){
+    const arrLength = myArray.length;
+    if (arrLength === 1){
+        return myArray;
+    }
+    const midPoint = Math.floor(arrLength/2);
+    return conquer(divide(myArray.slice(0, midPoint)), divide(myArray.slice(midPoint, arrLength))); 
+}
+
+function conquer(arr1, arr2){
+    let newArr = new Array(0);
+    let i = 0, j = 0;
+    while (arr1.length > i && arr2.length > j){
+        if(arr1[i]<arr2[j]){
+            newArr.push(arr1[i++]);
+        }
+        else{
+            newArr.push(arr2[j++]);
+        }
+    }
+    while(i < arr1.length){
+        newArr.push(arr1[i++])
+    }
+    while(j < arr2.length){
+        newArr.push(arr2[j++])
+    }
+    return newArr;
+}
 
 
 document.getElementById("startDemoButton").addEventListener("click", async function () {
@@ -135,10 +163,14 @@ document.getElementById("startDemoButton").addEventListener("click", async funct
   running = true;
   stop = false;
   globalArray = [];
+
   let myArray = createRandomArray(maxnum, maxnum);
+
   globalArray = Array.from(myArray);
 
-  await quicksort(myArray, 0);
+  await mergesort(myArray)
+
+  //await quicksort(myArray, 0);
   await completeArray();
 
   slider.disabled = false;
@@ -152,21 +184,43 @@ document.getElementById("endDemoButton").addEventListener("click", async functio
   slider.disabled = false;
 });
 
-const leftDecor = document.querySelector(".left-decor-0");
-const backgroundTest1 = document.querySelector(".about-section");
-const factory0 = document.querySelector(".factory-0")
-const factory1 = document.querySelector(".factory-1")
+
+
+
+const slider = document.getElementById("countSlider");
+const output = document.getElementById("sliderNumber");
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+slider.addEventListener("input", function () {
+  output.textContent = slider.value;
+  maxnum = slider.value;
+});
+
+
+const smoke = document.querySelector(".smoke");
+const factory = document.querySelector(".factory");
+const bgFactory = document.querySelector(".bg-factory");
+const gearsLeft = document.querySelectorAll(".gear-left");
+const gearsRight = document.querySelectorAll(".gear-right");
+const gearWrap = document.querySelector(".gear-wrap");
+
 
 
 document.addEventListener('scroll', function(){
   let value = window.scrollY;
-  leftDecor.style.marginTop = value/25 + 'vh';
-  //backgroundTest1.style.marginTop = value/55 + 'vh';
-  factory0.style.marginTop = value/65 + 'vh';
-  factory1.style.marginTop = value/45 + 'vh';
 
-  console.log(value);
+  smoke.style.marginTop = (value / 1.25) + 'px';
+  factory.style.marginTop = (value / 5) + 'px';
+  bgFactory.style.marginTop = (value / 2.5) + 'px';
+
+  gearsLeft.forEach((gear) => {
+    gear.style.transform = `rotate(${value/5}deg)`;
+  });
+  gearsRight.forEach((gear) => {
+    gear.style.transform = `rotate(${-value/5}deg)`;
+  });
+  gearWrap.style.marginLeft = ((value/70)-10)+'vw';
 });
-
-
-

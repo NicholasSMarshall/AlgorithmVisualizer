@@ -32,7 +32,7 @@ async function quicksort(myArray, offset) {
       visualArrayL.push(visualArrayR.splice(i - counter, 1)[0]);
       counter++;
 
-      await visibleArray(visualArrayL.concat([pivot]).concat(visualArrayR), offset, counter);
+      await visibleQuickArray(visualArrayL.concat([pivot]).concat(visualArrayR), offset, counter);
       await sleep(3000/maxnum);
     } else {
       arr2.push(myArray[i]);
@@ -47,7 +47,7 @@ async function quicksort(myArray, offset) {
   return leftSorted.concat([pivot]).concat(rightSorted);
 }
 
-async function visibleArray(currentArray, offset, counter) {
+async function visibleQuickArray(currentArray, offset, counter) {
   if(!stop){
     const container = document.querySelector(".bar-box");
 
@@ -120,38 +120,86 @@ async function completeArray() {
 
 
 
-function mergesort(myArray){
-    sortedArray = divide(myArray);
+async function mergesort(myArray){
+    globalArray = myArray;
+    let sortedArray = await divide(myArray, 0);
     return sortedArray;
 }
 
-function divide(myArray){
+async function divide(myArray, position){
     const arrLength = myArray.length;
     if (arrLength === 1){
         return myArray;
     }
     const midPoint = Math.floor(arrLength/2);
-    return conquer(divide(myArray.slice(0, midPoint)), divide(myArray.slice(midPoint, arrLength))); 
+    return await conquer(
+    await divide(myArray.slice(0, midPoint), position),
+    await divide(myArray.slice(midPoint, arrLength), position + midPoint),
+    position
+);
+
 }
 
-function conquer(arr1, arr2){
+async function conquer(arr1, arr2, position){
     let newArr = new Array(0);
     let i = 0, j = 0;
+    
     while (arr1.length > i && arr2.length > j){
         if(arr1[i]<arr2[j]){
+            globalArray[position] = arr1[i]
             newArr.push(arr1[i++]);
+            
+            await visibleMergeArray(newArr, position);
         }
         else{
+            globalArray[position] = arr2[j]
             newArr.push(arr2[j++]);
+            
+            await visibleMergeArray(newArr, position);
         }
+        position += 1;
+        await sleep(3000/maxnum);
     }
     while(i < arr1.length){
-        newArr.push(arr1[i++])
+        globalArray[position] = arr1[i]
+        newArr.push(arr1[i++]);
+        position += 1;
+        await visibleMergeArray(newArr, position);
+        await sleep(3000/maxnum);
     }
     while(j < arr2.length){
-        newArr.push(arr2[j++])
+        globalArray[position] = arr2[j]
+        newArr.push(arr2[j++]);
+        position += 1;
+        await visibleMergeArray(newArr, position);
+        await sleep(3000/maxnum);
     }
+    await sleep(3000/maxnum);
     return newArr;
+}
+
+async function visibleMergeArray(currentArray, offset) {
+  if(!stop){
+    const container = document.querySelector(".bar-box");
+
+    container.innerHTML = "";
+
+    globalArray.forEach((num, i) => {
+      const div = document.createElement("div");
+      div.classList.add("bar");
+      div.style.height = `${(num / maxnum) * 100}%`;
+      div.style.width = `${(100 / globalArray.length)}%`;
+
+      if (i === offset) {
+          div.style.backgroundColor = "red";
+      }
+
+      container.appendChild(div);
+      });
+  }
+  else{
+    return 0;
+  }
 }
 
 
@@ -168,7 +216,11 @@ document.getElementById("startDemoButton").addEventListener("click", async funct
 
   globalArray = Array.from(myArray);
 
-  await mergesort(myArray)
+  console.log(myArray);
+
+  await mergesort(myArray);
+
+  console.log(globalArray);
 
   //await quicksort(myArray, 0);
   await completeArray();

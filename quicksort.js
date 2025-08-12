@@ -129,6 +129,8 @@ async function mergesort(myArray){
 async function divide(myArray, position){
     const arrLength = myArray.length;
     if (arrLength === 1){
+        //await visibleMergeArray(myArray, position);
+        //await sleep(3000/maxnum);
         return myArray;
     }
     const midPoint = Math.floor(arrLength/2);
@@ -143,38 +145,44 @@ async function divide(myArray, position){
 async function conquer(arr1, arr2, position){
     let newArr = new Array(0);
     let i = 0, j = 0;
+    const startLength = arr1.length + arr2.length;
     
     while (arr1.length > i && arr2.length > j){
         if(arr1[i]<arr2[j]){
             globalArray[position] = arr1[i]
             newArr.push(arr1[i++]);
-            
-            await visibleMergeArray(newArr, position);
+            if(startLength > 1){
+                await visibleMergeArray(newArr, position);
+            }
         }
         else{
             globalArray[position] = arr2[j]
             newArr.push(arr2[j++]);
-            
-            await visibleMergeArray(newArr, position);
+            if(startLength > 1){
+                await visibleMergeArray(newArr, position);
+            }
         }
-        position += 1;
         await sleep(3000/maxnum);
+        position += 1;
     }
     while(i < arr1.length){
         globalArray[position] = arr1[i]
         newArr.push(arr1[i++]);
+        if(startLength > 1){
+            await visibleMergeArray(newArr, position);
+            await sleep(3000/maxnum);
+        }
         position += 1;
-        await visibleMergeArray(newArr, position);
-        await sleep(3000/maxnum);
     }
     while(j < arr2.length){
         globalArray[position] = arr2[j]
         newArr.push(arr2[j++]);
+        if(startLength > 1){
+            await visibleMergeArray(newArr, position);
+            await sleep(3000/maxnum);
+        }
         position += 1;
-        await visibleMergeArray(newArr, position);
-        await sleep(3000/maxnum);
     }
-    await sleep(3000/maxnum);
     return newArr;
 }
 

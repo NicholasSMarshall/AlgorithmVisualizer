@@ -129,8 +129,6 @@ async function mergesort(myArray){
 async function divide(myArray, position){
     const arrLength = myArray.length;
     if (arrLength === 1){
-        //await visibleMergeArray(myArray, position);
-        //await sleep(3000/maxnum);
         return myArray;
     }
     const midPoint = Math.floor(arrLength/2);
@@ -145,42 +143,35 @@ async function divide(myArray, position){
 async function conquer(arr1, arr2, position){
     let newArr = new Array(0);
     let i = 0, j = 0;
-    const startLength = arr1.length + arr2.length;
+    const startPosition = position;
     
     while (arr1.length > i && arr2.length > j){
         if(arr1[i]<arr2[j]){
-            globalArray[position] = arr1[i]
-            newArr.push(arr1[i++]);
-            if(startLength > 1){
-                await visibleMergeArray(newArr, position);
-            }
+            newArr.push(arr1[i++]); 
+            const tempArray = newArr.concat(arr1.slice(i)).concat(arr2.slice(j));
+            globalArray.splice(startPosition, tempArray.length, ...tempArray);
         }
         else{
-            globalArray[position] = arr2[j]
             newArr.push(arr2[j++]);
-            if(startLength > 1){
-                await visibleMergeArray(newArr, position);
-            }
+            const tempArray = newArr.concat(arr1.slice(i)).concat(arr2.slice(j));
+            globalArray.splice(startPosition, tempArray.length, ...tempArray);   
         }
+        await visibleMergeArray(newArr, position);
         await sleep(3000/maxnum);
         position += 1;
     }
     while(i < arr1.length){
         globalArray[position] = arr1[i]
         newArr.push(arr1[i++]);
-        if(startLength > 1){
-            await visibleMergeArray(newArr, position);
-            await sleep(3000/maxnum);
-        }
+        await visibleMergeArray(newArr, position);
+        await sleep(3000/maxnum);
         position += 1;
     }
     while(j < arr2.length){
         globalArray[position] = arr2[j]
         newArr.push(arr2[j++]);
-        if(startLength > 1){
-            await visibleMergeArray(newArr, position);
-            await sleep(3000/maxnum);
-        }
+        await visibleMergeArray(newArr, position);
+        await sleep(3000/maxnum);
         position += 1;
     }
     return newArr;
